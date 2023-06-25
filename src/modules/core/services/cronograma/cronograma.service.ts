@@ -73,15 +73,15 @@ export class CronogramaService {
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
   }
 
-  async findOne(nombreCronograma: string): Promise<any> {
+  async findOne(id_cronograma: string): Promise<any> {
     const cronograma = await this.cronogramaRepository.findOne({
       where: {
-        nombreCronograma,
+        id_cronograma,
       },
     });
 
     if (!cronograma) {
-      throw new NotFoundException(`El CRONOGRAMA con ID:  ${nombreCronograma} no se encontro`);
+      throw new NotFoundException(`El CRONOGRAMA con ID:  ${id_cronograma} no se encontro`);
     }
     return { data: cronograma };
   }

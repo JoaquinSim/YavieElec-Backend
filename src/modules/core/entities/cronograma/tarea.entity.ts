@@ -47,8 +47,8 @@ import { CatalogueEntity } from '../catalogue.entity';
   @ManyToOne(() => CronogramaEntity, {
     nullable: true,
   })
-  @JoinColumn({ name: 'cronograma_name' })
-  nombreCronograma: CronogramaEntity;
+  @JoinColumn({ name: 'cronograma_id' })
+  cronograma: CronogramaEntity;
 
     
       // @ManyToOne(() => CatalogueEntity, {

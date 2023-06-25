@@ -81,6 +81,6 @@ export class CronogramaEntity {
   })
   estado: boolean;
 
-  @OneToMany(() => TareaEntity, tarea => tarea.nombreCronograma)
+  @OneToMany(() => TareaEntity, tarea => tarea.cronograma)
   tareas: TareaEntity[];
 }

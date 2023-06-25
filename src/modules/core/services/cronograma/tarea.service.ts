@@ -17,13 +17,13 @@ export class TareaService {
   constructor(
     @Inject(RepositoryEnum.TAREA_REPOSITORY)
     private tareaRepository: Repository<TareaEntity>,
-    private cronogramaService : CronogramaService,
+    private cronogramaService: CronogramaService,
     private cataloguesService: CataloguesService,
-  ) {}
+  ) { }
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.tareaRepository.findAndCount({
-     relations: ['nombreCronograma'],
+      relations: ['nombreCronograma'],
       take: 1000,
     });
 
@@ -43,12 +43,12 @@ export class TareaService {
     //   payload.modality.id,
     // );
 
-    newtarea.nombreCronograma = await this.cronogramaService.findOne(
-      payload.cronograma.nombreCronograma
-    );
+    newtarea.cronograma = (await this.cronogramaService.findOne(
+      payload.cronograma.id_cronograma
+    )).data;
 
-    console.log(newtarea.nombreCronograma);
-    
+    console.log("Creando tarea unida al cronograma: " + newtarea);
+
 
     //newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
 
@@ -69,7 +69,7 @@ export class TareaService {
 
     //All
     const data = await this.tareaRepository.findAndCount({
-      relations: ['nombreCronograma'],
+      relations: ['cronograma'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
@@ -77,13 +77,13 @@ export class TareaService {
 
   async findOne(id_tarea: string): Promise<any> {
     const tarea = await this.tareaRepository.findOne({
-     relations: ['nombreCronograma'],
+      relations: ['cronograma'],
       where: {
         id_tarea,
-      },     
+      },
     });
 
-    console.log(tarea.nombreCronograma );
+    console.log("Cronograma unida a la tarea: " + tarea.cronograma);
 
     if (!tarea) {
       throw new NotFoundException(`El tarea con ID:  ${id_tarea} no se encontro`);
