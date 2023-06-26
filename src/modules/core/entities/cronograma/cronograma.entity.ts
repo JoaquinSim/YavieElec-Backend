@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { TareaEntity } from './tarea.entity';
 
-
 @Entity('cronogramas', { schema: 'core' })
 export class CronogramaEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -45,7 +44,6 @@ export class CronogramaEntity {
     type: 'varchar',
     name: 'nombre_cronograma',
     comment: 'Nombre del cronograma',
-    nullable: true,
   })
   nombreCronograma: string;
 
@@ -53,34 +51,30 @@ export class CronogramaEntity {
     type: 'varchar',
     name: 'descripcion_cronograma',
     comment: 'Descripcion del cronograma',
-    nullable: true,
   })
   descripcionCronograma: string;
 
   @Column({
-    type: 'varchar',
+    type: 'date',
     name: 'fecha_inicio',
     comment: 'Fecha de inicio del cronograma',
-    nullable: true,
   })
-  fechaInicio: string;
+  fechaInicio: Date;
 
   @Column({
-    type: 'varchar',
+    type: 'date',
     name: 'fecha_fin',
     comment: 'Fecha de finalizacion del cronograma',
-    nullable: true,
   })
-  fechaFin: string;
+  fechaFin: Date;
 
   @Column({
     type: 'boolean',
     name: 'estado',
     comment: 'Estado del cronograma, Ejm: Activo o Inactivo',
-    nullable: true,
   })
   estado: boolean;
 
-  @OneToMany(() => TareaEntity, tarea => tarea.cronograma)
+  @OneToMany(() => TareaEntity, (tarea) => tarea.cronograma)
   tareas: TareaEntity[];
 }
