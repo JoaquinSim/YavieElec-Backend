@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
   } from 'typeorm';
+import { ListasEntity } from './listas.entity';
   
   @Entity('candidatos_lista', { schema: 'core' })
   export class CandidatosEntity {
@@ -37,27 +38,20 @@ import {
       comment: 'Fecha de eliminacion de candidatos',
     })
     deletedAt: Date;
-  
-    @Column({
-      name: 'id_lista',
-      type: 'numeric',
-      comment: 'Id que tiene la lista ',
+
+    @ManyToOne(() => ListasEntity, {
+      nullable: true,
     })
-    id_lista: number;
+    @JoinColumn({ name: 'lista_id' })
+    lista: ListasEntity;
+
   
     @Column({
       name: 'id_usuario',
-      type: 'int',
+      type: 'numeric',
       comment: 'Id que tiene el usuario',
     })
     id_usuario: number;
-  
-    @Column({
-      name: 'id_cargo',
-      type: 'int',
-      comment: 'Id que tiene el cargo',
-    })
-    id_cargo: number;
-  
+    
   }
   

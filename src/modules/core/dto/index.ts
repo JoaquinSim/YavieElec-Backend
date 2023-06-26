@@ -51,3 +51,16 @@ export * from './cronograma/tareas/update-tarea.dto';
 export * from './cronograma/cronogramas/cronograma.dto';
 export * from './cronograma/cronogramas/create-cronograma.dto';
 export * from './cronograma/cronogramas/update-cronograma.dto'
+
+
+//Dignidad
+//candidato
+export * from './dignidad/candidato.dto';
+export * from './dignidad/create-candidato.dto';
+export * from './dignidad/update-candidato.dto';
+
+//lista
+export * from './dignidad/lista/lista.dto';
+export * from './dignidad/lista/create-lista.dto';
+export * from './dignidad/lista/update-lista.dto';
+

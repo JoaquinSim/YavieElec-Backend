@@ -17,8 +17,8 @@ export * from './cronograma/tarea.service';
 //Dignidades
 export * from './dignidad/candidato.service';
 export * from './dignidad/cargo.service';
-export * from './dignidad/lista.service';
 export * from './dignidad/tipoLista.service';
+export * from './dignidad/lista.service';
 
 //Carrera
 export * from './carrera/carrera.service';

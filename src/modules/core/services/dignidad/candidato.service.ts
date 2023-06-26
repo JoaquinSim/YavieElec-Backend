@@ -1,29 +1,30 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import {
+  CandidatoDto,
   // CreateCandidatosListaDto,
   // UpdateCandidatoDto,
   // FilterCandidatoListaDto,
-  PaginationDto,
+  PaginationDto, TareaDto,
 } from '@core/dto';
-import { CandidatosEntity } from '@core/entities';
-import { InstitutionsService, CataloguesService } from '@core/services';
+import { CandidatosEntity, TareaEntity } from '@core/entities';
+import { CronogramaService, CataloguesService, } from '@core/services';
+import { ListasService } from './lista.service';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
-import { any } from 'joi';
 
 @Injectable()
-export class CandidatoService {
+export class CandidatosService {
   constructor(
     @Inject(RepositoryEnum.CANDIDATO_REPOSITORY)
-    private candidatosListaRepository: Repository<CandidatosEntity>,
-    private institutionService: InstitutionsService,
+    private candidatoRepository: Repository<CandidatosEntity>,
     private cataloguesService: CataloguesService,
-  ) {}
+    private listaService: ListasService,
+  ) { }
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
-    const response = await this.candidatosListaRepository.findAndCount({
-     // relations: ['idLista', 'IdCandidato', 'IdCargo'],
+    const response = await this.candidatoRepository.findAndCount({
+      relations: ['lista'],
       take: 1000,
     });
 
@@ -36,24 +37,27 @@ export class CandidatoService {
     };
   }
 
-  async create(payload: any): Promise<ServiceResponseHttpModel> {
-    const newCandidato = this.candidatosListaRepository.create(payload);
-
-    // newCareer.institution = await this.institutionService.findOne(
-    //   payload.institution.id,
-    // );
+  async create(payload: CandidatoDto): Promise<ServiceResponseHttpModel> {
+    const newtarea = this.candidatoRepository.create(payload);
 
     // newCandidato.modality = await this.cataloguesService.findOne(
     //   payload.modality.id,
     // );
 
-    // newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
+    newtarea.lista = (await this.listaService.findOne(
+      payload.lista.id
+    )).data;
+
+    console.log("Creando tarea unida al cronograma: " + newtarea);
+
+
+    //newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
 
     //newCandidato.type = await this.cataloguesService.findOne(payload.type.id);
 
-    const candidatoCreated = await this.candidatosListaRepository.save(newCandidato);
+    const tareaCreated = await this.candidatoRepository.save(newtarea);
 
-    return { data: candidatoCreated };
+    return { data: tareaCreated };
   }
 
   async findAll(params?: any): Promise<ServiceResponseHttpModel> {
@@ -65,63 +69,65 @@ export class CandidatoService {
     //Filter by other field
 
     //All
-    const data = await this.candidatosListaRepository.findAndCount({
-      //relations: ['idLista', 'IdCandidato', 'IdCargo'],
+    const data = await this.candidatoRepository.findAndCount({
+      relations: ['lista'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
   }
 
   async findOne(idCandidatoLista: string): Promise<any> {
-    const candidatos = await this.candidatosListaRepository.findOne({
-     // relations: ['idLista', 'IdCandidato', 'IdCargo'],
+    const tarea = await this.candidatoRepository.findOne({
+      relations: ['lista'],
       where: {
         idCandidatoLista,
       },
     });
 
-    if (!candidatos) {
-      throw new NotFoundException(`El Candidato con ID:  ${idCandidatoLista} no se encontro`);
+    console.log("Cronograma unida a la tarea: " + tarea.lista);
+
+    if (!tarea) {
+      throw new NotFoundException(`El tarea con ID:  ${idCandidatoLista} no se encontro`);
     }
-    return { data: candidatos };
+    return { data: tarea };
   }
 
   async update(
     idCandidatoLista: string,
     payload: any,
   ): Promise<ServiceResponseHttpModel> {
-    const candidato = await this.candidatosListaRepository.findOneBy({ idCandidatoLista });
-    if (!candidato) {
-      throw new NotFoundException(`El candidato con id:  ${idCandidatoLista} no se encontro`);
+    const tarea = await this.candidatoRepository.findOneBy({ idCandidatoLista });
+    if (!tarea) {
+      throw new NotFoundException(`El tarea con id:  ${idCandidatoLista} no se encontro`);
     }
-    this.candidatosListaRepository.merge(candidato, payload);
-    const candidatoUpdated = await this.candidatosListaRepository.save(candidato);
-    return { data: candidatoUpdated };
+    this.candidatoRepository.merge(tarea, payload);
+    const tareaUpdated = await this.candidatoRepository.save(tarea);
+    return { data: tareaUpdated };
   }
 
   async remove(idCandidatoLista: string): Promise<ServiceResponseHttpModel> {
-    const candidato = await this.candidatosListaRepository.findOneBy({ idCandidatoLista });
+    const tarea = await this.candidatoRepository.findOneBy({ idCandidatoLista });
 
-    if (!candidato) {
-      throw new NotFoundException(`El Candidato con ID:  ${idCandidatoLista} no se encontro`);
+    if (!tarea) {
+      throw new NotFoundException(`El tarea con ID:  ${idCandidatoLista} no se encontro`);
     }
 
-    const candidatoDeleted = await this.candidatosListaRepository.softRemove(candidato);
+    const tareaDeleted = await this.candidatoRepository.softRemove(tarea);
 
-    return { data: candidatoDeleted };
+    return { data: tareaDeleted };
   }
 
-  async removeAll(payload: CandidatosEntity[]): Promise<ServiceResponseHttpModel> {
-    const candidatoDeleted = await this.candidatosListaRepository.softRemove(payload);
-    return { data: candidatoDeleted };
+  async removeAll(payload: TareaEntity[]): Promise<ServiceResponseHttpModel> {
+    const tareaDeleted = await this.candidatoRepository.softRemove(payload);
+    return { data: tareaDeleted };
   }
 
   private async paginateAndFilter(
     params: any,
   ): Promise<ServiceResponseHttpModel> {
     let where:
-      | FindOptionsWhere<CandidatosEntity>
-      | FindOptionsWhere<CandidatosEntity>[];
+      | FindOptionsWhere<TareaEntity>
+      | FindOptionsWhere<TareaEntity>[];
     where = {};
     let { page, search } = params;
     const { limit } = params;
@@ -130,11 +136,11 @@ export class CandidatoService {
       search = search.trim();
       page = 0;
       where = [];
-      where.push({ idCandidatoLista: ILike(`%${search}%`) });
+      where.push({ id_tarea: ILike(`%${search}%`) });
     }
 
-    const response = await this.candidatosListaRepository.findAndCount({
-      relations: ['idLista', 'IdCandidato', 'IdCargo'],
+    const response = await this.candidatoRepository.findAndCount({
+      //relations: ['idLista', 'IdCandidato', 'IdCargo'],
       where,
       take: limit,
       skip: PaginationDto.getOffset(limit, page),

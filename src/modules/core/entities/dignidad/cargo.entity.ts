@@ -3,11 +3,14 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
   } from 'typeorm';
+import { CandidatosEntity } from './candidato.entity';
   
   @Entity('cargo', { schema: 'core' })
   export class CargoEntity {
@@ -60,5 +63,9 @@ import {
       comment: 'Descripcion del cargo en el que se encuentra. Ej. Presidente, Secretario'
     })
     descripcionCargo: string;
+
+    // @OneToOne(() => CandidatosEntity)
+    // @JoinColumn()
+    // candidato: CandidatosEntity
   }
   

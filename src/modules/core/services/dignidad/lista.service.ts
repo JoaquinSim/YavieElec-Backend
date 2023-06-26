@@ -1,24 +1,22 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import {
+  CreateListaDto,
   // CreateCargoDto,
   // UpdateCargoDto,
   // FilterCargoDto,
   PaginationDto,
+  UpdateListaDto,
 } from '@core/dto';
 import { ListasEntity } from '@core/entities';
-import { InstitutionsService, CataloguesService } from '@core/services';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
-import { any } from 'joi';
 
 @Injectable()
 export class ListasService {
   constructor(
     @Inject(RepositoryEnum.LISTAS_REPOSITORY)
-    private listasRepository: Repository<ListasEntity>,
-    private institutionService: InstitutionsService,
-    private cataloguesService: CataloguesService,
+    private listasRepository: Repository<ListasEntity>
   ) {}
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
@@ -36,7 +34,7 @@ export class ListasService {
     };
   }
 
-  async create(payload: any): Promise<ServiceResponseHttpModel> {
+  async create(payload: CreateListaDto): Promise<ServiceResponseHttpModel> {
     const newListas = this.listasRepository.create(payload);
 
     // newCareer.institution = await this.institutionService.findOne(
@@ -88,7 +86,7 @@ export class ListasService {
 
   async update(
     id: string,
-    payload: any,
+    payload: UpdateListaDto,
   ): Promise<ServiceResponseHttpModel> {
     const listas = await this.listasRepository.findOneBy({ id });
     if (!listas) {
@@ -130,13 +128,13 @@ export class ListasService {
       search = search.trim();
       page = 0;
       where = [];
-      where.push({ id_lista: ILike(`%${search}%`) });
+      where.push({ id: ILike(`%${search}%`) });
       where.push({ nombre: ILike(`%${search}%`) });
       where.push({ propuesta: ILike(`%${search}%`) });
     }
 
     const response = await this.listasRepository.findAndCount({
-      relations: ['IdListas', 'nombre', 'listas'],
+     // relations: ['IdListas', 'nombre', 'listas'],
       where,
       take: limit,
       skip: PaginationDto.getOffset(limit, page),

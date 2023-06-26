@@ -9,7 +9,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { CatalogueEntity, CurriculumEntity, VotosEntity } from '@core/entities';
+import { CandidatosEntity, CatalogueEntity, CurriculumEntity, VotosEntity } from '@core/entities';
 
 @Entity('listas', { schema: 'core' })
 export class ListasEntity {
@@ -37,13 +37,12 @@ export class ListasEntity {
   })
   deletedAt: Date;
 
-  //@OneToMany(() => ListasEntity, (category) => category.parent)
-  //@JoinColumn({ name: 'academic_period_id' })
-  //academicPeriod: CatalogueEntity;
+  @OneToMany(() => CandidatosEntity, (candidato) => candidato.lista)
+  candidato: CandidatosEntity[];
 
-  @OneToMany(() => VotosEntity, (votos) => votos.lista)
-  @JoinColumn({ name: 'id_lista' })
-  address: VotosEntity;
+  // @OneToMany(() => VotosEntity, (votos) => votos.lista)
+  // @JoinColumn({ name: 'id_lista' })
+  // address: VotosEntity;
   /*
     @ManyToOne(() => CurriculumEntity, { nullable: false })
     @JoinColumn({ name: 'curriculum_id' })
@@ -57,12 +56,6 @@ export class ListasEntity {
     @JoinColumn({ name: 'type_id' })
     type: CatalogueEntity;
   */
-  @Column('varchar', {
-    name: 'id_lista',
-    comment: 'Id de la tabla lista',
-  })
-  id_lista: string;
-
   @Column('varchar', {
     name: 'periodo_lectivo',
     comment: 'Tabla de periodo lectivo',

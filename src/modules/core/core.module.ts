@@ -26,7 +26,7 @@ import {
   StudentsService,
   SubjectsService,
   InformationTeachersService,
-  CandidatoService,
+  CandidatosService,
   CargosService,
   CarrerasService,
   VotosService,
@@ -83,7 +83,7 @@ import { coreProviders } from '@core/providers';
     SubjectsService,
 
     //
-    CandidatoService,
+    CandidatosService,
     CargosService,
     ListasService,
     TipoListaService,
@@ -114,7 +114,7 @@ import { coreProviders } from '@core/providers';
     SubjectsService,
 
     //
-    CandidatoService,
+    CandidatosService,
     CargosService,
     ListasService,
     TipoListaService,
