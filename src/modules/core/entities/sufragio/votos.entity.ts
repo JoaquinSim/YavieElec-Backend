@@ -8,7 +8,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import { CatalogueEntity, CurriculumEntity, ListasEntity } from '@core/entities';
+import {
+  CatalogueEntity,
+  CurriculumEntity,
+  ListasEntity,
+} from '@core/entities';
 
 @Entity('votos', { schema: 'core' })
 export class VotosEntity {
@@ -52,11 +56,6 @@ export class VotosEntity {
     @JoinColumn({ name: 'type_id' })
     type: CatalogueEntity;
   */
-  @Column('varchar', {
-    name: 'id_votos',
-    comment: 'Id de la tabla votos',
-  })
-  id_votos: string;
 
   @Column('varchar', {
     name: 'periodo_lectivo',

@@ -6,13 +6,18 @@ import { config } from '@config';
 import {
   AuthController,
   RolesController,
+  TipoUsuarioController,
   UsersController,
+  UsuarioController,
 } from '@auth/controllers';
 import {
   AuthService,
   MenusService,
+  RolService,
   RolesService,
+  TipoUsuarioService,
   UsersService,
+  UsuariosService,
 } from '@auth/services';
 import { JwtStrategy } from '@auth/strategies';
 import { authProviders } from '@auth/providers';
@@ -41,6 +46,10 @@ import { MenusController } from './controllers/menus.controller';
     MenusController,
     RolesController,
     UsersController,
+
+    //
+    UsuarioController,
+    TipoUsuarioController,
   ],
   providers: [
     ...authProviders,
@@ -49,7 +58,19 @@ import { MenusController } from './controllers/menus.controller';
     RolesService,
     UsersService,
     MenusService,
+    UsuariosService,
+    TipoUsuarioService,
+    RolService,
   ],
-  exports: [UsersService, RolesService, MenusService],
+  exports: [
+    UsersService,
+    RolesService,
+    MenusService,
+
+    //
+    UsuariosService,
+    TipoUsuarioService,
+    RolService,
+  ],
 })
 export class AuthModule {}

@@ -13,7 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-// import { CreateCareerDto, UpdateCareerDto, FilterCareerDto } from '@core/dto';
+import { CreateListaDto, UpdateListaDto } from '@core/dto';
 import { ListasService } from '@core/services';
 import { ListasEntity } from '@core/entities';
 import { ResponseHttpModel } from '@shared/models';
@@ -21,7 +21,7 @@ import { ResponseHttpModel } from '@shared/models';
 @ApiTags('Listas')
 @Controller('listas')
 export class ListasController {
-  constructor(private listasService: ListasService) { }
+  constructor(private listasService: ListasService) {}
 
   @ApiOperation({ summary: 'Catalogue Listas' })
   @Get('catalogue')
@@ -40,7 +40,7 @@ export class ListasController {
   @ApiOperation({ summary: 'Create listas' })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() payload: any): Promise<ResponseHttpModel> {
+  async create(@Body() payload: CreateListaDto): Promise<ResponseHttpModel> {
     const serviceResponse = await this.listasService.create(payload);
 
     return {
@@ -84,7 +84,7 @@ export class ListasController {
   @HttpCode(HttpStatus.CREATED)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() payload: any,
+    @Body() payload: UpdateListaDto,
   ): Promise<ResponseHttpModel> {
     const serviceResponse = await this.listasService.update(id, payload);
     return {

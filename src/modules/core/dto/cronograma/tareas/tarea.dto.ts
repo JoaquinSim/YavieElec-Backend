@@ -1,4 +1,8 @@
-import { InstitutionEntity, CatalogueEntity, CronogramaEntity } from '@core/entities';
+import {
+  InstitutionEntity,
+  CatalogueEntity,
+  CronogramaEntity,
+} from '@core/entities';
 import {
   IsString,
   MaxLength,

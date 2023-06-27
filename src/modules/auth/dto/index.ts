@@ -27,3 +27,15 @@ export * from './menus/create-menu.dto';
 export * from './menus/update-menu.dto';
 export * from './menus/filter-menu.dto';
 export * from './menus/read-menu.dto';
+
+
+//
+//USUARIO
+export * from './usuarios/usuario.dto';
+export * from './usuarios/create-usuario.dto';
+export * from './usuarios/update-usuario.dto'
+
+//TIPOuSUARIO
+export * from './usuarios/tipoUsuario/tipoUsuario.dto';
+export * from './usuarios/tipoUsuario/create-tipoUsuario.dto';
+export * from './usuarios/tipoUsuario/update-tipoUsuario.dto'

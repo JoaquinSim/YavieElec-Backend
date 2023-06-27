@@ -23,7 +23,7 @@ export class CronogramaService {
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.cronogramaRepository.findAndCount({
-     // relations: ['idLista', 'IdCandidato', 'IdCargo'],
+      // relations: ['idLista', 'IdCandidato', 'IdCargo'],
       take: 1000,
     });
 
@@ -36,7 +36,9 @@ export class CronogramaService {
     };
   }
 
-  async create(payload: CreateCronogramaDto): Promise<ServiceResponseHttpModel> {
+  async create(
+    payload: CreateCronogramaDto,
+  ): Promise<ServiceResponseHttpModel> {
     const newCronograma = this.cronogramaRepository.create(payload);
 
     // newCronograma.tareas = await this.tareaService.findOne(
@@ -51,8 +53,9 @@ export class CronogramaService {
 
     //newCandidato.type = await this.cataloguesService.findOne(payload.type.id);
 
-    const cronogramaCreated = await this.cronogramaRepository.save(newCronograma);
-    
+    const cronogramaCreated = await this.cronogramaRepository.save(
+      newCronograma,
+    );
 
     return { data: cronogramaCreated };
   }
@@ -81,7 +84,9 @@ export class CronogramaService {
     });
 
     if (!cronograma) {
-      throw new NotFoundException(`El CRONOGRAMA con ID:  ${id_cronograma} no se encontro`);
+      throw new NotFoundException(
+        `El CRONOGRAMA con ID:  ${id_cronograma} no se encontro`,
+      );
     }
     return { data: cronograma };
   }
@@ -90,9 +95,13 @@ export class CronogramaService {
     id_cronograma: string,
     payload: any,
   ): Promise<ServiceResponseHttpModel> {
-    const cronograma = await this.cronogramaRepository.findOneBy({ id_cronograma });
+    const cronograma = await this.cronogramaRepository.findOneBy({
+      id_cronograma,
+    });
     if (!cronograma) {
-      throw new NotFoundException(`El cronograma con id:  ${id_cronograma} no se encontro`);
+      throw new NotFoundException(
+        `El cronograma con id:  ${id_cronograma} no se encontro`,
+      );
     }
     this.cronogramaRepository.merge(cronograma, payload);
     const cronogramaUpdated = await this.cronogramaRepository.save(cronograma);
@@ -100,19 +109,29 @@ export class CronogramaService {
   }
 
   async remove(id_cronograma: string): Promise<ServiceResponseHttpModel> {
-    const cronograma = await this.cronogramaRepository.findOneBy({ id_cronograma });
+    const cronograma = await this.cronogramaRepository.findOneBy({
+      id_cronograma,
+    });
 
     if (!cronograma) {
-      throw new NotFoundException(`El Cronograma con ID:  ${id_cronograma} no se encontro`);
+      throw new NotFoundException(
+        `El Cronograma con ID:  ${id_cronograma} no se encontro`,
+      );
     }
 
-    const cronogramaDeleted = await this.cronogramaRepository.softRemove(cronograma);
+    const cronogramaDeleted = await this.cronogramaRepository.softRemove(
+      cronograma,
+    );
 
     return { data: cronogramaDeleted };
   }
 
-  async removeAll(payload: CronogramaEntity[]): Promise<ServiceResponseHttpModel> {
-    const cronogramaDeleted = await this.cronogramaRepository.softRemove(payload);
+  async removeAll(
+    payload: CronogramaEntity[],
+  ): Promise<ServiceResponseHttpModel> {
+    const cronogramaDeleted = await this.cronogramaRepository.softRemove(
+      payload,
+    );
     return { data: cronogramaDeleted };
   }
 

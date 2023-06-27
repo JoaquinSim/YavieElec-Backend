@@ -23,7 +23,7 @@ export class VotosService {
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.votosRepository.findAndCount({
-     // relations: ['IdVoto', 'nombre', 'voto'],
+      // relations: ['IdVoto', 'nombre', 'voto'],
       take: 1000,
     });
 
@@ -66,7 +66,7 @@ export class VotosService {
 
     //All
     const data = await this.votosRepository.findAndCount({
-     // relations: ['IdVotos', 'nombre', 'votos'],
+      // relations: ['IdVotos', 'nombre', 'votos'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
@@ -74,7 +74,7 @@ export class VotosService {
 
   async findOne(id: string): Promise<any> {
     const votos = await this.votosRepository.findOne({
-    //  relations: ['IdVotos', 'nombre', 'votos'],
+      //  relations: ['IdVotos', 'nombre', 'votos'],
       where: {
         id,
       },
@@ -86,10 +86,7 @@ export class VotosService {
     return { data: votos };
   }
 
-  async update(
-    id: string,
-    payload: any,
-  ): Promise<ServiceResponseHttpModel> {
+  async update(id: string, payload: any): Promise<ServiceResponseHttpModel> {
     const votos = await this.votosRepository.findOneBy({ id });
     if (!votos) {
       throw new NotFoundException(`el voto con id:  ${id} no se encontro`);
@@ -119,9 +116,7 @@ export class VotosService {
   private async paginateAndFilter(
     params: any,
   ): Promise<ServiceResponseHttpModel> {
-    let where:
-      | FindOptionsWhere<VotosEntity>
-      | FindOptionsWhere<VotosEntity>[];
+    let where: FindOptionsWhere<VotosEntity> | FindOptionsWhere<VotosEntity>[];
     where = {};
     let { page, search } = params;
     const { limit } = params;
@@ -130,7 +125,7 @@ export class VotosService {
       search = search.trim();
       page = 0;
       where = [];
-      where.push({ id_votos: ILike(`%${search}%`) });
+      where.push({ id: ILike(`%${search}%`) });
       where.push({ tipo_voto: ILike(`%${search}%`) });
     }
 

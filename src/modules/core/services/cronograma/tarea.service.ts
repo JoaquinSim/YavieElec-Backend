@@ -4,13 +4,13 @@ import {
   // CreateCandidatosListaDto,
   // UpdateCandidatoDto,
   // FilterCandidatoListaDto,
-  PaginationDto, TareaDto,
+  PaginationDto,
+  TareaDto,
 } from '@core/dto';
 import { TareaEntity } from '@core/entities';
 import { CronogramaService, CataloguesService } from '@core/services';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
-import { any } from 'joi';
 
 @Injectable()
 export class TareaService {
@@ -19,7 +19,7 @@ export class TareaService {
     private tareaRepository: Repository<TareaEntity>,
     private cronogramaService: CronogramaService,
     private cataloguesService: CataloguesService,
-  ) { }
+  ) {}
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.tareaRepository.findAndCount({
@@ -43,12 +43,11 @@ export class TareaService {
     //   payload.modality.id,
     // );
 
-    newtarea.cronograma = (await this.cronogramaService.findOne(
-      payload.cronograma.id_cronograma
-    )).data;
+    newtarea.cronograma = (
+      await this.cronogramaService.findOne(payload.cronograma.id_cronograma)
+    ).data;
 
-    console.log("Creando tarea unida al cronograma: " + newtarea);
-
+    console.log('Creando tarea unida al cronograma: ' + newtarea);
 
     //newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
 
@@ -75,7 +74,7 @@ export class TareaService {
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
   }
 
-  async findOne(id_tarea: string): Promise<any> {
+  async findOne(id_tarea: string): Promise<ServiceResponseHttpModel> {
     const tarea = await this.tareaRepository.findOne({
       relations: ['cronograma'],
       where: {
@@ -83,10 +82,12 @@ export class TareaService {
       },
     });
 
-    console.log("Cronograma unida a la tarea: " + tarea.cronograma);
+    console.log('Cronograma unida a la tarea: ' + tarea.cronograma);
 
     if (!tarea) {
-      throw new NotFoundException(`El tarea con ID:  ${id_tarea} no se encontro`);
+      throw new NotFoundException(
+        `El tarea con ID:  ${id_tarea} no se encontro`,
+      );
     }
     return { data: tarea };
   }
@@ -97,7 +98,9 @@ export class TareaService {
   ): Promise<ServiceResponseHttpModel> {
     const tarea = await this.tareaRepository.findOneBy({ id_tarea });
     if (!tarea) {
-      throw new NotFoundException(`El tarea con id:  ${id_tarea} no se encontro`);
+      throw new NotFoundException(
+        `El tarea con id:  ${id_tarea} no se encontro`,
+      );
     }
     this.tareaRepository.merge(tarea, payload);
     const tareaUpdated = await this.tareaRepository.save(tarea);
@@ -108,7 +111,9 @@ export class TareaService {
     const tarea = await this.tareaRepository.findOneBy({ id_tarea });
 
     if (!tarea) {
-      throw new NotFoundException(`El tarea con ID:  ${id_tarea} no se encontro`);
+      throw new NotFoundException(
+        `El tarea con ID:  ${id_tarea} no se encontro`,
+      );
     }
 
     const tareaDeleted = await this.tareaRepository.softRemove(tarea);
@@ -124,9 +129,7 @@ export class TareaService {
   private async paginateAndFilter(
     params: any,
   ): Promise<ServiceResponseHttpModel> {
-    let where:
-      | FindOptionsWhere<TareaEntity>
-      | FindOptionsWhere<TareaEntity>[];
+    let where: FindOptionsWhere<TareaEntity> | FindOptionsWhere<TareaEntity>[];
     where = {};
     let { page, search } = params;
     const { limit } = params;

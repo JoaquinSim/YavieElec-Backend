@@ -2,8 +2,11 @@ import { DataSource } from 'typeorm';
 import {
   MenuEntity,
   PermissionEntity,
+  RolEntity,
   RoleEntity,
+  TipoUsuarioEntity,
   UserEntity,
+  UsuarioEntity,
 } from '@auth/entities';
 import { DataSourceEnum, RepositoryEnum } from '@shared/enums';
 
@@ -30,6 +33,25 @@ export const authProviders = [
     provide: RepositoryEnum.USER_REPOSITORY,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(UserEntity),
+    inject: [DataSourceEnum.PG_DATA_SOURCE],
+  },
+
+  //Usuarios
+  {
+    provide: RepositoryEnum.USUARIO_REPOSITORY,
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(UsuarioEntity),
+    inject: [DataSourceEnum.PG_DATA_SOURCE],
+  },
+  {
+    provide: RepositoryEnum.TIPO_USUARIO_REPOSITORY,
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(TipoUsuarioEntity),
+    inject: [DataSourceEnum.PG_DATA_SOURCE],
+  },
+  {
+    provide: RepositoryEnum.ROL_REPOSITORY,
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(RolEntity),
     inject: [DataSourceEnum.PG_DATA_SOURCE],
   },
 ];
