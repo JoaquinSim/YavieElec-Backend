@@ -64,3 +64,12 @@ export * from './dignidad/lista/lista.dto';
 export * from './dignidad/lista/create-lista.dto';
 export * from './dignidad/lista/update-lista.dto';
 
+//Cargo
+export * from './dignidad/cargo/cargo.dto';
+export * from './dignidad/cargo/create-cargo.dto';
+export * from './dignidad/cargo/updata-cargo.dto';
+
+//tipo Lista
+export * from './dignidad/tipoListas/tipoLista.dto';
+export * from './dignidad/tipoListas/create-tipoLista.dto'
+export * from './dignidad/tipoListas/update-tipoLista.dto';

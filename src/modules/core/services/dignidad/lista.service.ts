@@ -11,12 +11,14 @@ import {
 import { ListasEntity } from '@core/entities';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
+import { TipoListaService } from './tipoLista.service';
 
 @Injectable()
 export class ListasService {
   constructor(
     @Inject(RepositoryEnum.LISTAS_REPOSITORY)
-    private listasRepository: Repository<ListasEntity>
+    private listasRepository: Repository<ListasEntity>,
+    private tipoListaServie: TipoListaService
   ) {}
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
@@ -37,13 +39,9 @@ export class ListasService {
   async create(payload: CreateListaDto): Promise<ServiceResponseHttpModel> {
     const newListas = this.listasRepository.create(payload);
 
-    // newCareer.institution = await this.institutionService.findOne(
-    //   payload.institution.id,
-    // );
-
-    // newListas.modality = await this.cataloguesService.findOne(
-    //   payload.modality.id,
-    // );
+    newListas.tipoLista = (await this.tipoListaServie.findOne(
+      payload.tipoLista.id_tipoLista,
+    )).data;
 
     // newListas.state = await this.cataloguesService.findOne(payload.state.id);
 
@@ -64,7 +62,7 @@ export class ListasService {
 
     //All
     const data = await this.listasRepository.findAndCount({
-      //relations: ['IdListas', 'nombre', 'listas'],
+      relations: ['tipoLista'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
@@ -72,7 +70,7 @@ export class ListasService {
 
   async findOne(id: string): Promise<any> {
     const listas = await this.listasRepository.findOne({
-      //relations: ['IdListas', 'nombre', 'listas'],
+      relations: ['tipoLista'],
       where: {
         id,
       },

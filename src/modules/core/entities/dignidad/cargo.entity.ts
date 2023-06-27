@@ -63,9 +63,5 @@ import { CandidatosEntity } from './candidato.entity';
       comment: 'Descripcion del cargo en el que se encuentra. Ej. Presidente, Secretario'
     })
     descripcionCargo: string;
-
-    // @OneToOne(() => CandidatosEntity)
-    // @JoinColumn()
-    // candidato: CandidatosEntity
   }
   

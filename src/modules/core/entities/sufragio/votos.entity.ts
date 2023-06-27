@@ -39,19 +39,19 @@ export class VotosEntity {
   // @ManyToOne(() => ListasEntity, { nullable: false })
   // @JoinColumn({ name: 'id_votos' })
   // academicPeriod: ListasEntity;
-/*
-  @ManyToOne(() => CurriculumEntity, { nullable: false })
-  @JoinColumn({ name: 'curriculum_id' })
-  curriculum: CurriculumEntity;
-
-  @ManyToOne(() => CatalogueEntity, { nullable: false })
-  @JoinColumn({ name: 'state_id' })
-  state: CatalogueEntity;
-
-  @ManyToOne(() => CatalogueEntity, { nullable: true })
-  @JoinColumn({ name: 'type_id' })
-  type: CatalogueEntity;
-*/
+  /*
+    @ManyToOne(() => CurriculumEntity, { nullable: false })
+    @JoinColumn({ name: 'curriculum_id' })
+    curriculum: CurriculumEntity;
+  
+    @ManyToOne(() => CatalogueEntity, { nullable: false })
+    @JoinColumn({ name: 'state_id' })
+    state: CatalogueEntity;
+  
+    @ManyToOne(() => CatalogueEntity, { nullable: true })
+    @JoinColumn({ name: 'type_id' })
+    type: CatalogueEntity;
+  */
   @Column('varchar', {
     name: 'id_votos',
     comment: 'Id de la tabla votos',
@@ -75,10 +75,10 @@ export class VotosEntity {
     comment: 'Valido, nulo o en blanco',
   })
   tipo_voto: string;
-  
+
   @Column('date', {
-      name: 'hora_voto',
-      comment: 'Hora a la que se realizo el voto',
-    })
-    hora_voto: Date;
+    name: 'hora_voto',
+    comment: 'Hora a la que se realizo el voto',
+  })
+  hora_voto: Date;
 }

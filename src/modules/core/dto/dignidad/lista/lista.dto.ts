@@ -1,4 +1,4 @@
-import { InstitutionEntity, CatalogueEntity, CronogramaEntity, ListasEntity } from '@core/entities';
+import { InstitutionEntity, CatalogueEntity, CronogramaEntity, ListasEntity, TipoListaEntity } from '@core/entities';
 import {
   IsString,
   MaxLength,
@@ -46,4 +46,7 @@ export class ListaDto {
 
   @IsNotEmpty()
   estado: boolean;
+
+  @IsNotEmpty(isNotEmptyValidationOptions())
+  readonly tipoLista: TipoListaEntity;
 }

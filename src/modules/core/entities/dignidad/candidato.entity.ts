@@ -5,10 +5,12 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
   } from 'typeorm';
 import { ListasEntity } from './listas.entity';
+import { CargoEntity } from './cargo.entity';
   
   @Entity('candidatos_lista', { schema: 'core' })
   export class CandidatosEntity {
@@ -45,6 +47,9 @@ import { ListasEntity } from './listas.entity';
     @JoinColumn({ name: 'lista_id' })
     lista: ListasEntity;
 
+    @OneToOne(() => CargoEntity)
+    @JoinColumn()
+    cargo: CargoEntity
   
     @Column({
       name: 'id_usuario',

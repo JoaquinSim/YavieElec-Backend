@@ -1,10 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import {
-  // CreateCargoDto,
+   CreateCargoDto,
   // UpdateCargoDto,
   // FilterCargoDto,
   PaginationDto,
+  UpdateCargoDto,
 } from '@core/dto';
 import { CargoEntity } from '@core/entities';
 import { InstitutionsService, CataloguesService } from '@core/services';
@@ -36,7 +37,7 @@ export class CargosService {
     };
   }
 
-  async create(payload: any): Promise<ServiceResponseHttpModel> {
+  async create(payload: CreateCargoDto): Promise<ServiceResponseHttpModel> {
     const newCargo = this.cargoRepository.create(payload);
 
     // newCareer.institution = await this.institutionService.findOne(
@@ -88,7 +89,7 @@ export class CargosService {
 
   async update(
     idCargo: string,
-    payload: any,
+    payload: UpdateCargoDto,
   ): Promise<ServiceResponseHttpModel> {
     const cargo = await this.cargoRepository.findOneBy({ idCargo });
     if (!cargo) {

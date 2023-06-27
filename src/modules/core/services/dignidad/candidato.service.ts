@@ -3,13 +3,14 @@ import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import {
   CandidatoDto,
   // CreateCandidatosListaDto,
-  // UpdateCandidatoDto,
+  UpdateCandidatoDto,
   // FilterCandidatoListaDto,
-  PaginationDto, TareaDto,
+  PaginationDto,
 } from '@core/dto';
-import { CandidatosEntity, TareaEntity } from '@core/entities';
-import { CronogramaService, CataloguesService, } from '@core/services';
+import { CandidatosEntity } from '@core/entities';
+import { CronogramaService, CataloguesService } from '@core/services';
 import { ListasService } from './lista.service';
+import { CargosService } from './cargo.service'
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
 
@@ -20,6 +21,7 @@ export class CandidatosService {
     private candidatoRepository: Repository<CandidatosEntity>,
     private cataloguesService: CataloguesService,
     private listaService: ListasService,
+    private cargoService: CargosService
   ) { }
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
@@ -38,26 +40,30 @@ export class CandidatosService {
   }
 
   async create(payload: CandidatoDto): Promise<ServiceResponseHttpModel> {
-    const newtarea = this.candidatoRepository.create(payload);
+    const newcandidato = this.candidatoRepository.create(payload);
 
     // newCandidato.modality = await this.cataloguesService.findOne(
     //   payload.modality.id,
     // );
 
-    newtarea.lista = (await this.listaService.findOne(
+    newcandidato.lista = (await this.listaService.findOne(
       payload.lista.id
     )).data;
 
-    console.log("Creando tarea unida al cronograma: " + newtarea);
+    newcandidato.cargo = (await this.cargoService.findOne(
+      payload.cargo.idCargo
+    )).data;
+
+    console.log("Creando candidato unida al cronograma: " + newcandidato);
 
 
     //newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
 
     //newCandidato.type = await this.cataloguesService.findOne(payload.type.id);
 
-    const tareaCreated = await this.candidatoRepository.save(newtarea);
+    const candidatoCreated = await this.candidatoRepository.save(newcandidato);
 
-    return { data: tareaCreated };
+    return { data: candidatoCreated };
   }
 
   async findAll(params?: any): Promise<ServiceResponseHttpModel> {
@@ -70,64 +76,64 @@ export class CandidatosService {
 
     //All
     const data = await this.candidatoRepository.findAndCount({
-      relations: ['lista'],
+      relations: ['lista', 'cargo'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
   }
 
   async findOne(idCandidatoLista: string): Promise<any> {
-    const tarea = await this.candidatoRepository.findOne({
+    const candidato = await this.candidatoRepository.findOne({
       relations: ['lista'],
       where: {
         idCandidatoLista,
       },
     });
 
-    console.log("Cronograma unida a la tarea: " + tarea.lista);
+    console.log("Cronograma unida a la candidato: " + candidato.lista);
 
-    if (!tarea) {
-      throw new NotFoundException(`El tarea con ID:  ${idCandidatoLista} no se encontro`);
+    if (!candidato) {
+      throw new NotFoundException(`El candidato con ID:  ${idCandidatoLista} no se encontro`);
     }
-    return { data: tarea };
+    return { data: candidato };
   }
 
   async update(
     idCandidatoLista: string,
-    payload: any,
+    payload: UpdateCandidatoDto,
   ): Promise<ServiceResponseHttpModel> {
-    const tarea = await this.candidatoRepository.findOneBy({ idCandidatoLista });
-    if (!tarea) {
-      throw new NotFoundException(`El tarea con id:  ${idCandidatoLista} no se encontro`);
+    const candidato = await this.candidatoRepository.findOneBy({ idCandidatoLista });
+    if (!candidato) {
+      throw new NotFoundException(`El candidato con id:  ${idCandidatoLista} no se encontro`);
     }
-    this.candidatoRepository.merge(tarea, payload);
-    const tareaUpdated = await this.candidatoRepository.save(tarea);
-    return { data: tareaUpdated };
+    this.candidatoRepository.merge(candidato, payload);
+    const candidatoUpdated = await this.candidatoRepository.save(candidato);
+    return { data: candidatoUpdated };
   }
 
   async remove(idCandidatoLista: string): Promise<ServiceResponseHttpModel> {
-    const tarea = await this.candidatoRepository.findOneBy({ idCandidatoLista });
+    const candidato = await this.candidatoRepository.findOneBy({ idCandidatoLista });
 
-    if (!tarea) {
-      throw new NotFoundException(`El tarea con ID:  ${idCandidatoLista} no se encontro`);
+    if (!candidato) {
+      throw new NotFoundException(`El candidato con ID:  ${idCandidatoLista} no se encontro`);
     }
 
-    const tareaDeleted = await this.candidatoRepository.softRemove(tarea);
+    const candidatoDeleted = await this.candidatoRepository.softRemove(candidato);
 
-    return { data: tareaDeleted };
+    return { data: candidatoDeleted };
   }
 
-  async removeAll(payload: TareaEntity[]): Promise<ServiceResponseHttpModel> {
-    const tareaDeleted = await this.candidatoRepository.softRemove(payload);
-    return { data: tareaDeleted };
+  async removeAll(payload: CandidatosEntity[]): Promise<ServiceResponseHttpModel> {
+    const candidatoDeleted = await this.candidatoRepository.softRemove(payload);
+    return { data: candidatoDeleted };
   }
 
   private async paginateAndFilter(
     params: any,
   ): Promise<ServiceResponseHttpModel> {
     let where:
-      | FindOptionsWhere<TareaEntity>
-      | FindOptionsWhere<TareaEntity>[];
+      | FindOptionsWhere<CandidatosEntity>
+      | FindOptionsWhere<CandidatosEntity>[];
     where = {};
     let { page, search } = params;
     const { limit } = params;
@@ -136,7 +142,7 @@ export class CandidatosService {
       search = search.trim();
       page = 0;
       where = [];
-      where.push({ id_tarea: ILike(`%${search}%`) });
+      where.push({ idCandidatoLista: ILike(`%${search}%`) });
     }
 
     const response = await this.candidatoRepository.findAndCount({

@@ -15,14 +15,12 @@ import {
   minLengthValidationOptions,
 } from '@shared/validation';
 
-export class CandidatoDto {
+export class TipoListaDto {
   @IsNotEmpty(isNotEmptyValidationOptions())
-  readonly lista: ListasEntity;
+  @IsString(isStringValidationOptions())
+  nombreTipoLista: string;
 
   @IsNotEmpty(isNotEmptyValidationOptions())
-  readonly cargo: CargoEntity;
-
-  @IsNotEmpty(isNotEmptyValidationOptions())
-  @IsNumber()
-  id_usuario: number;
+  @IsString(isStringValidationOptions())
+  descripcionTipoLista: string;
 }

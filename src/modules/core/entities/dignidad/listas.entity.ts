@@ -8,8 +8,9 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
-import { CandidatosEntity, CatalogueEntity, CurriculumEntity, VotosEntity } from '@core/entities';
+import { CandidatosEntity, CatalogueEntity, CurriculumEntity, TipoListaEntity, VotosEntity } from '@core/entities';
 
 @Entity('listas', { schema: 'core' })
 export class ListasEntity {
@@ -39,6 +40,10 @@ export class ListasEntity {
 
   @OneToMany(() => CandidatosEntity, (candidato) => candidato.lista)
   candidato: CandidatosEntity[];
+
+  @OneToOne(() => TipoListaEntity)
+  @JoinColumn()
+  tipoLista: TipoListaEntity;
 
   // @OneToMany(() => VotosEntity, (votos) => votos.lista)
   // @JoinColumn({ name: 'id_lista' })
@@ -92,7 +97,7 @@ export class ListasEntity {
   })
   nro_lista: number;
 
-  @Column('character', {
+  @Column('varchar', {
     name: 'logo',
     comment: 'Numero de la lista',
   })
