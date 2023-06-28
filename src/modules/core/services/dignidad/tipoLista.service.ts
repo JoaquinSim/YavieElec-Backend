@@ -6,7 +6,7 @@ import {
   // FilterCandidatoListaDto,
   PaginationDto,
 } from '@core/dto';
-import {TipoListaEntity } from '@core/entities';
+import { TipoListaEntity } from '@core/entities';
 import { CronogramaService, CataloguesService } from '@core/services';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
@@ -17,13 +17,13 @@ export class TipoListaService {
   constructor(
     @Inject(RepositoryEnum.TIPO_LISTA_REPOSITORY)
     private tipoListaRepository: Repository<TipoListaEntity>,
-    private cronogramaService : CronogramaService,
+    private cronogramaService: CronogramaService,
     private cataloguesService: CataloguesService,
   ) {}
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.tipoListaRepository.findAndCount({
-     relations: ['nombreCronograma'],
+      relations: ['nombreCronograma'],
       take: 1000,
     });
 
@@ -48,7 +48,6 @@ export class TipoListaService {
     // );
 
     // console.log(newtipoLista.nombreCronograma);
-    
 
     //newCandidato.state = await this.cataloguesService.findOne(payload.state.id);
 
@@ -69,7 +68,7 @@ export class TipoListaService {
 
     //All
     const data = await this.tipoListaRepository.findAndCount({
-     // relations: ['nombreCronograma'],
+      // relations: ['nombreCronograma'],
     });
 
     return { pagination: { totalItems: data[1], limit: 10 }, data: data[0] };
@@ -77,16 +76,18 @@ export class TipoListaService {
 
   async findOne(id_tipoLista: string): Promise<any> {
     const tipoLista = await this.tipoListaRepository.findOne({
-    // relations: ['nombreCronograma'],
+      // relations: ['nombreCronograma'],
       where: {
         id_tipoLista,
-      },     
+      },
     });
 
-   // console.log(tipoLista.nombreCronograma );
+    // console.log(tipoLista.nombreCronograma );
 
     if (!tipoLista) {
-      throw new NotFoundException(`El tipoLista con ID:  ${id_tipoLista} no se encontro`);
+      throw new NotFoundException(
+        `El tipoLista con ID:  ${id_tipoLista} no se encontro`,
+      );
     }
     return { data: tipoLista };
   }
@@ -95,9 +96,13 @@ export class TipoListaService {
     id_tipoLista: string,
     payload: any,
   ): Promise<ServiceResponseHttpModel> {
-    const tipoLista = await this.tipoListaRepository.findOneBy({ id_tipoLista });
+    const tipoLista = await this.tipoListaRepository.findOneBy({
+      id_tipoLista,
+    });
     if (!tipoLista) {
-      throw new NotFoundException(`El tipoLista con id:  ${id_tipoLista} no se encontro`);
+      throw new NotFoundException(
+        `El tipoLista con id:  ${id_tipoLista} no se encontro`,
+      );
     }
     this.tipoListaRepository.merge(tipoLista, payload);
     const tipoListaUpdated = await this.tipoListaRepository.save(tipoLista);
@@ -105,18 +110,26 @@ export class TipoListaService {
   }
 
   async remove(id_tipoLista: string): Promise<ServiceResponseHttpModel> {
-    const tipoLista = await this.tipoListaRepository.findOneBy({ id_tipoLista });
+    const tipoLista = await this.tipoListaRepository.findOneBy({
+      id_tipoLista,
+    });
 
     if (!tipoLista) {
-      throw new NotFoundException(`El tipoLista con ID:  ${id_tipoLista} no se encontro`);
+      throw new NotFoundException(
+        `El tipoLista con ID:  ${id_tipoLista} no se encontro`,
+      );
     }
 
-    const tipoListaDeleted = await this.tipoListaRepository.softRemove(tipoLista);
+    const tipoListaDeleted = await this.tipoListaRepository.softRemove(
+      tipoLista,
+    );
 
     return { data: tipoListaDeleted };
   }
 
-  async removeAll(payload: TipoListaEntity[]): Promise<ServiceResponseHttpModel> {
+  async removeAll(
+    payload: TipoListaEntity[],
+  ): Promise<ServiceResponseHttpModel> {
     const tipoListaDeleted = await this.tipoListaRepository.softRemove(payload);
     return { data: tipoListaDeleted };
   }

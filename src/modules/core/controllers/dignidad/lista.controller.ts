@@ -40,14 +40,15 @@ export class ListasController {
   @ApiOperation({ summary: 'Create listas' })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() payload: CreateListaDto): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.listasService.create(payload);
-
-    return {
-      data: serviceResponse.data,
-      message: 'lista creado con Exito',
-      title: 'lista Creado',
-    };
+  async create(@Body() payload: any) /*: Promise<ResponseHttpModel> */ {
+    // const serviceResponse = await this.listasService.create(payload);
+    // console.log('esto crea las listas');
+    // return {
+    //   data: serviceResponse.data,
+    //   message: 'lista creado con Exito',
+    //   title: 'lista Creado',
+    // };
+    this.listasService.create(payload)
   }
 
   @ApiOperation({ summary: 'Find All listas' })
@@ -55,6 +56,7 @@ export class ListasController {
   @HttpCode(HttpStatus.OK)
   async findAll(@Query() params: any): Promise<ResponseHttpModel> {
     const serviceResponse = await this.listasService.findAll(params);
+    console.log('esto trae las listas');
 
     return {
       data: serviceResponse.data,
