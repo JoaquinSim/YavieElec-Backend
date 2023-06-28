@@ -36,21 +36,20 @@ export class ListasService {
     };
   }
 
-  async create(payload: any) /*: Promise<ServiceResponseHttpModel> */ {
-    // const newListas = this.listasRepository.create(payload);
+  async create(payload: any): Promise<ServiceResponseHttpModel> {
+    const newListas = this.listasRepository.create(payload);
 
-    // // newListas.tipoLista = (
-    // //   await this.tipoListaServie.findOne(payload.tipoLista.id_tipoLista)
-    // // ).data;
+    // newListas.tipoLista = (
+    //   await this.tipoListaServie.findOne(payload.tipoLista.id_tipoLista)
+    // ).data;
 
-    // // newListas.state = await this.cataloguesService.findOne(payload.state.id);
+    // newListas.state = await this.cataloguesService.findOne(payload.state.id);
 
-    // //newCandidato.type = await this.cataloguesService.findOne(payload.type.id);
+    //newCandidato.type = await this.cataloguesService.findOne(payload.type.id);
 
-    // const listasCreated = await this.listasRepository.save(newListas);
+    const listasCreated = await this.listasRepository.save(newListas);
 
-    // return { data: listasCreated };
-    return 'a';
+    return { data: listasCreated };
   }
 
   async findAll(params?: any): Promise<ServiceResponseHttpModel> {
