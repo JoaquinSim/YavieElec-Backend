@@ -73,3 +73,8 @@ export * from './dignidad/cargo/updata-cargo.dto';
 export * from './dignidad/tipoListas/tipoLista.dto';
 export * from './dignidad/tipoListas/create-tipoLista.dto'
 export * from './dignidad/tipoListas/update-tipoLista.dto';
+
+//sufragio
+export * from './sufragio/voto.dto';
+export * from './sufragio/create-voto.dto';
+export * from './sufragio/update-voto.dto'

@@ -1,13 +1,14 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import {
+  CreateVotoDto,
   // CreateCargoDto,
   // UpdateCargoDto,
   // FilterCargoDto,
   PaginationDto,
 } from '@core/dto';
 import { VotosEntity } from '@core/entities';
-import { InstitutionsService, CataloguesService } from '@core/services';
+import { InstitutionsService, CataloguesService, ListasService } from '@core/services';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
 import { any } from 'joi';
@@ -17,7 +18,7 @@ export class VotosService {
   constructor(
     @Inject(RepositoryEnum.VOTO_REPOSRITORY)
     private votosRepository: Repository<VotosEntity>,
-    private institutionService: InstitutionsService,
+    private listaService: ListasService,
     private cataloguesService: CataloguesService,
   ) {}
 
@@ -36,16 +37,13 @@ export class VotosService {
     };
   }
 
-  async create(payload: any): Promise<ServiceResponseHttpModel> {
+  async create(payload: CreateVotoDto): Promise<ServiceResponseHttpModel> {
     const newVotos = this.votosRepository.create(payload);
 
-    // newCareer.institution = await this.institutionService.findOne(
-    //   payload.institution.id,
-    // );
 
-    // newVotos.modality = await this.cataloguesService.findOne(
-    //   payload.modality.id,
-    // );
+    newVotos.lista = await this.listaService.findOne(
+      payload.lista.id,
+    );
 
     // newVotos.state = await this.cataloguesService.findOne(payload.state.id);
 

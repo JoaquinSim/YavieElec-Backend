@@ -57,27 +57,13 @@ export class VotosEntity {
     type: CatalogueEntity;
   */
 
-  @Column('varchar', {
-    name: 'periodo_lectivo',
-    comment: 'Tabla de periodo lectivo',
-  })
-  periodo_lectivo: string;
-
-  @Column('varchar', {
-    name: 'lista',
-    comment: 'Tabla de lista',
-  })
-  lista: string;
+  @ManyToOne(() => ListasEntity, { nullable: false })
+  @JoinColumn({ name: 'voto_id' })
+  lista: ListasEntity;
 
   @Column('varchar', {
     name: 'tipo_voto',
     comment: 'Valido, nulo o en blanco',
   })
   tipo_voto: string;
-
-  @Column('date', {
-    name: 'hora_voto',
-    comment: 'Hora a la que se realizo el voto',
-  })
-  hora_voto: Date;
 }

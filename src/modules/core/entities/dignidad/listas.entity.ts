@@ -41,6 +41,9 @@ export class ListasEntity {
   @OneToMany(() => CandidatosEntity, (candidato) => candidato.lista)
   candidato: CandidatosEntity[];
 
+  @OneToMany(() => VotosEntity, (voto) => voto.lista)
+  voto: VotosEntity[];
+
   @OneToOne(() => TipoListaEntity)
   @JoinColumn()
   tipoLista: TipoListaEntity;
