@@ -26,7 +26,7 @@ import { ResponseHttpModel } from '@shared/models';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiOperation({ summary: 'login' })
+  @ApiOperation({ summary: 'Login' })
   @PublicRoute()
   @Post('login')
   @HttpCode(HttpStatus.CREATED)
