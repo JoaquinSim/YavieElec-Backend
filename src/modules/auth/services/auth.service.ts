@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as Bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { Repository } from 'typeorm';
-import { UserEntity } from '@auth/entities';
+import { UsuarioEntity } from '@auth/entities';
 import { PayloadTokenModel } from '@auth/models';
 import { RepositoryEnum } from '@shared/enums';
 import {
@@ -27,9 +27,8 @@ import { UsersService } from '@auth/services';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(RepositoryEnum.USER_REPOSITORY)
-    private repository: Repository<UserEntity>,
-    private readonly userService: UsersService,
+    @Inject(RepositoryEnum.USUARIO_REPOSITORY)
+    private repository: Repository<UsuarioEntity>,
     private jwtService: JwtService,
   ) {}
 
@@ -50,7 +49,7 @@ export class AuthService {
       throw new BadRequestException('The passwords do not match.');
     }
 
-    user.password = payload.newPassword;
+    user.clave = payload.newPassword;
 
     await this.repository.save(user);
 
@@ -58,22 +57,22 @@ export class AuthService {
   }
 
   async login(payload: LoginDto) {
-    const user = await this.findByUsername(payload.username);
+    const user = await this.findByCorreo(payload.correo);
 
-    if (user && user.maxAttempts === 0)
-      throw new UnauthorizedException(
-        'User exceeded the maximum number of attempts allowed.',
-      );
+    // if (user && user.maxAttempts === 0)
+    //   throw new UnauthorizedException(
+    //     'User exceeded the maximum number of attempts allowed.',
+    //   );
 
-    if (user && user.suspendedAt)
-      throw new UnauthorizedException('User is suspended.');
+    // if (user && user.suspendedAt)
+    //   throw new UnauthorizedException('User is suspended.');
 
-    if (!user || !(await this.checkPassword(payload.password, user))) {
+    if (!user || !(await this.checkPassword(payload.clave, user))) {
       throw new UnauthorizedException('Wrong username and/or password.');
     }
 
-    user.activatedAt = new Date();
-    const { password, roles, ...userRest } = user;
+   // user.activatedAt = new Date();
+    const { clave, ...userRest } = user;
 
     await this.repository.update(userRest.id, userRest);
 
@@ -82,101 +81,101 @@ export class AuthService {
     return { data: { accessToken, user } };
   }
 
-  async findProfile(id: string): Promise<ServiceResponseHttpModel> {
-    const user = await this.repository.findOne({
-      where: { id },
-      relations: {
-        bloodType: true,
-        ethnicOrigin: true,
-        identificationType: true,
-        gender: true,
-        maritalStatus: true,
-        sex: true,
-      },
-    });
+  // async findProfile(id: string): Promise<ServiceResponseHttpModel> {
+  //   const user = await this.repository.findOne({
+  //     where: { id },
+  //     relations: {
+  //       bloodType: true,
+  //       ethnicOrigin: true,
+  //       identificationType: true,
+  //       gender: true,
+  //       maritalStatus: true,
+  //       sex: true,
+  //     },
+  //   });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    return { data: plainToInstance(ReadProfileDto, user) };
-  }
+  //   return { data: plainToInstance(ReadProfileDto, user) };
+  // }
 
-  async findUserInformation(id: string): Promise<ServiceResponseHttpModel> {
-    const user = await this.repository.findOneBy({ id });
+  // async findUserInformation(id: string): Promise<ServiceResponseHttpModel> {
+  //   const user = await this.repository.findOneBy({ id });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    return { data: plainToInstance(ReadUserInformationDto, user) };
-  }
+  //   return { data: plainToInstance(ReadUserInformationDto, user) };
+  // }
 
-  async updateUserInformation(
-    id: string,
-    payload: UpdateUserInformationDto,
-  ): Promise<ServiceResponseHttpModel> {
-    const user = (await this.userService.findOne(id)).data as UserEntity;
+  // async updateUserInformation(
+  //   id: string,
+  //   payload: UpdateUserInformationDto,
+  // ): Promise<ServiceResponseHttpModel> {
+  //   const user = (await this.userService.findOne(id)).data as UsuarioEntity;
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    this.repository.merge(user, payload);
-    const userUpdated = await this.repository.save(user);
+  //   this.repository.merge(user, payload);
+  //   const userUpdated = await this.repository.save(user);
 
-    return { data: plainToInstance(ReadUserInformationDto, userUpdated) };
-  }
+  //   return { data: plainToInstance(ReadUserInformationDto, userUpdated) };
+  // }
 
-  async updateProfile(
-    id: string,
-    payload: UpdateProfileDto,
-  ): Promise<ServiceResponseHttpModel> {
-    const user = await this.repository.findOneBy({ id });
+  // async updateProfile(
+  //   id: string,
+  //   payload: UpdateProfileDto,
+  // ): Promise<ServiceResponseHttpModel> {
+  //   const user = await this.repository.findOneBy({ id });
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    this.repository.merge(user, payload);
+  //   this.repository.merge(user, payload);
 
-    const profileUpdated = await this.repository.save(user);
+  //   const profileUpdated = await this.repository.save(user);
 
-    return { data: plainToInstance(ReadProfileDto, profileUpdated) };
-  }
+  //   return { data: plainToInstance(ReadProfileDto, profileUpdated) };
+  // }
 
-  refreshToken(user: UserEntity) {
+  refreshToken(user: UsuarioEntity) {
     const accessToken = this.generateJwt(user);
 
     return { data: { accessToken, user } };
   }
 
-  private generateJwt(user: UserEntity) {
+  private generateJwt(user: UsuarioEntity) {
     const payload: PayloadTokenModel = { id: user.id, role: 'admin' };
 
     return this.jwtService.sign(payload);
   }
 
-  private async findByUsername(username: string): Promise<UserEntity> {
+  private async findByCorreo(correo: string): Promise<UsuarioEntity> {
     return (await this.repository.findOne({
       where: {
-        username,
+        correo,
       },
-    })) as UserEntity;
+    })) as UsuarioEntity;
   }
 
-  private async checkPassword(passwordCompare: string, user: UserEntity) {
-    const { password, ...userRest } = user;
-    const isMatch = Bcrypt.compareSync(passwordCompare, password);
+  private async checkPassword(passwordCompare: string, user: UsuarioEntity) {
+    const { clave, ...userRest } = user;
+    const isMatch = Bcrypt.compareSync(passwordCompare, clave);
 
     if (isMatch) {
-      userRest.maxAttempts = 3;
+     // userRest.maxAttempts = 3;
       await this.repository.save(userRest);
       return user;
     }
 
-    userRest.maxAttempts =
-      userRest.maxAttempts > 0 ? userRest.maxAttempts - 1 : 0;
+   // userRest.maxAttempts =
+     // userRest.maxAttempts > 0 ? userRest.maxAttempts - 1 : 0;
     await this.repository.save(userRest);
 
     return null;

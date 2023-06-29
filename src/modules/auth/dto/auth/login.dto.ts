@@ -7,9 +7,9 @@ import {
 export class LoginDto {
   @IsString(isStringValidationOptions())
   @IsNotEmpty(isNotEmptyValidationOptions())
-  username: string;
+  correo: string;
 
   @IsString(isStringValidationOptions())
   @IsNotEmpty()
-  password: string;
+  clave: string;
 }

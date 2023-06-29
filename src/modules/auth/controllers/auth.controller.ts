@@ -12,7 +12,7 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Auth, PublicRoute, User } from '@auth/decorators';
 import { AuthService } from '@auth/services';
-import { UserEntity } from '@auth/entities';
+import { UsuarioEntity } from '@auth/entities';
 import {
   LoginDto,
   PasswordChangeDto,
@@ -57,81 +57,81 @@ export class AuthController {
     };
   }
 
-  @ApiOperation({ summary: 'Find Profile' })
-  @Auth()
-  @Get('profile')
-  @HttpCode(HttpStatus.OK)
-  async findProfile(@User() user: UserEntity): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.authService.findProfile(user.id);
+  // @ApiOperation({ summary: 'Find Profile' })
+  // @Auth()
+  // @Get('profile')
+  // @HttpCode(HttpStatus.OK)
+  // async findProfile(@User() user: UserEntity): Promise<ResponseHttpModel> {
+  //   const serviceResponse = await this.authService.findProfile(user.id);
 
-    return {
-      data: serviceResponse.data,
-      message: `profile`,
-      title: `Success`,
-    };
-  }
+  //   return {
+  //     data: serviceResponse.data,
+  //     message: `profile`,
+  //     title: `Success`,
+  //   };
+  // }
 
-  @ApiOperation({ summary: 'Find User Information' })
-  @Auth()
-  @Get('user-information')
-  @HttpCode(HttpStatus.CREATED)
-  async findUserInformation(
-    @User() user: UserEntity,
-  ): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.authService.findUserInformation(user.id);
+  // @ApiOperation({ summary: 'Find User Information' })
+  // @Auth()
+  // @Get('user-information')
+  // @HttpCode(HttpStatus.CREATED)
+  // async findUserInformation(
+  //   @User() user: UserEntity,
+  // ): Promise<ResponseHttpModel> {
+  //   const serviceResponse = await this.authService.findUserInformation(user.id);
 
-    return {
-      data: serviceResponse.data,
-      message: 'The user information was updated',
-      title: 'User Information Updated',
-    };
-  }
+  //   return {
+  //     data: serviceResponse.data,
+  //     message: 'The user information was updated',
+  //     title: 'User Information Updated',
+  //   };
+  // }
 
-  @ApiOperation({ summary: 'Update Profile' })
-  @Auth()
-  @Put('profile')
-  @HttpCode(HttpStatus.CREATED)
-  async updateProfile(
-    @User() user: UserEntity,
-    @Body() payload: UpdateProfileDto,
-  ): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.authService.updateProfile(
-      user.id,
-      payload,
-    );
+  // @ApiOperation({ summary: 'Update Profile' })
+  // @Auth()
+  // @Put('profile')
+  // @HttpCode(HttpStatus.CREATED)
+  // async updateProfile(
+  //   @User() user: UserEntity,
+  //   @Body() payload: UpdateProfileDto,
+  // ): Promise<ResponseHttpModel> {
+  //   const serviceResponse = await this.authService.updateProfile(
+  //     user.id,
+  //     payload,
+  //   );
 
-    return {
-      data: serviceResponse.data,
-      message: 'The profile was updated',
-      title: 'Profile Updated',
-    };
-  }
+  //   return {
+  //     data: serviceResponse.data,
+  //     message: 'The profile was updated',
+  //     title: 'Profile Updated',
+  //   };
+  // }
 
-  @ApiOperation({ summary: 'Update User Information' })
-  @Auth()
-  @Put('user-information')
-  @HttpCode(HttpStatus.CREATED)
-  async updateUserInformation(
-    @User('id', ParseUUIDPipe) id: string,
-    @Body() payload: UpdateUserInformationDto,
-  ): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.authService.updateUserInformation(
-      id,
-      payload,
-    );
+  // @ApiOperation({ summary: 'Update User Information' })
+  // @Auth()
+  // @Put('user-information')
+  // @HttpCode(HttpStatus.CREATED)
+  // async updateUserInformation(
+  //   @User('id', ParseUUIDPipe) id: string,
+  //   @Body() payload: UpdateUserInformationDto,
+  // ): Promise<ResponseHttpModel> {
+  //   const serviceResponse = await this.authService.updateUserInformation(
+  //     id,
+  //     payload,
+  //   );
 
-    return {
-      data: serviceResponse.data,
-      message: 'The user information was updated',
-      title: 'User Information Updated',
-    };
-  }
+  //   return {
+  //     data: serviceResponse.data,
+  //     message: 'The user information was updated',
+  //     title: 'User Information Updated',
+  //   };
+  // }
 
   @ApiOperation({ summary: 'Refresh Token' })
   @Auth()
   @Get('refresh-token')
   @HttpCode(HttpStatus.CREATED)
-  refreshToken(@User() user: UserEntity) {
+  refreshToken(@User() user: UsuarioEntity) {
     const serviceResponse = this.authService.refreshToken(user);
 
     return {
