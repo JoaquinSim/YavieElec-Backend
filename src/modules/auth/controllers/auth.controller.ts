@@ -32,7 +32,8 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async login(@Body() payload: LoginDto): Promise<ResponseHttpModel> {
     const serviceResponse = await this.authService.login(payload);
-
+    console.log('esto es el login');
+    
     return {
       data: serviceResponse.data,
       message: 'Correct Access',
