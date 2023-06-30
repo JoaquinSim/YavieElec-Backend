@@ -37,9 +37,9 @@ export class UsuarioService {
   async create(payload: UsuarioDto): Promise<ServiceResponseHttpModel> {
     const newusuario = this.usuarioRepository.create(payload);
 
-    newusuario.roles = await this.rolService.findOne(
-      payload.role.id,
-    );
+    // newusuario.roles = await this.rolService.findOne(
+    //   payload.role.id,
+    // );
 
     // newusuario.usuarios = (
     //   await this.usuarioService.findOne(payload.usuarios.id)

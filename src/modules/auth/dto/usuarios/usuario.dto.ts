@@ -22,9 +22,6 @@ import { RolEntity, RoleEntity } from '@auth/entities';
 
 export class UsuarioDto {
   @IsNotEmpty(isNotEmptyValidationOptions())
-  readonly role: RolEntity;
-
-  @IsNotEmpty(isNotEmptyValidationOptions())
   @IsString(isStringValidationOptions())
   roles: string;
   

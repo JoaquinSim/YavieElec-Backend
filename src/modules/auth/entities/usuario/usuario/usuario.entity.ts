@@ -50,6 +50,7 @@ export class UsuarioEntity {
     name: 'roles',
     type: 'varchar',
     comment: 'roles del usuario',
+    nullable: true,
   })
   roles: string;
 
@@ -57,6 +58,7 @@ export class UsuarioEntity {
     name: 'cedula',
     type: 'numeric',
     comment: 'Escribir su numero de cedula',
+    nullable: true,
   })
   cedula: number;
 
@@ -64,6 +66,7 @@ export class UsuarioEntity {
     name: 'nombre',
     type: 'varchar',
     comment: 'Escribir su nombre. Ej: Joselito',
+    nullable: true,
   })
   nombre: string;
 
@@ -71,6 +74,7 @@ export class UsuarioEntity {
     name: 'apellido',
     type: 'varchar',
     comment: 'Escriba su Apellido. Ej: Perez',
+    nullable: true,
   })
   apellido: string;
 
@@ -78,6 +82,7 @@ export class UsuarioEntity {
     name: 'semestre',
     type: 'varchar',
     comment: 'Especifique la carrea en la que esta',
+    nullable: true,
   })
   semestre: string;
 
@@ -85,6 +90,7 @@ export class UsuarioEntity {
     name: 'carrera',
     type: 'varchar',
     comment: 'Especifique la carrera en la que esta',
+    nullable: true,
   })
   carrera: string;
 
@@ -92,6 +98,7 @@ export class UsuarioEntity {
     name: 'correo',
     type: 'varchar',
     comment: 'Escriba su coreo',
+    nullable: true,
   })
   correo: string;
 
@@ -99,6 +106,7 @@ export class UsuarioEntity {
     name: 'estado',
     type: 'boolean',
     comment: 'Especifique su estado. Ej: Activo',
+    nullable: true,
   })
   estado: boolean;
 
@@ -106,6 +114,7 @@ export class UsuarioEntity {
     name: 'clave',
     type: 'varchar',
     comment: 'Especifique su password de seguridad',
+    nullable: true,
   })
   clave: string;
 
@@ -113,6 +122,7 @@ export class UsuarioEntity {
     name: 'estadoVoto',
     type: 'boolean',
     comment: 'Especificar el voto. Ej: Valido, Nulo, Blanco',
+    nullable: true,
   })
   estadoVoto: boolean;
 
