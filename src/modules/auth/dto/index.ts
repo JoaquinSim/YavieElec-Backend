@@ -39,3 +39,8 @@ export * from './usuarios/update-usuario.dto'
 export * from './usuarios/tipoUsuario/tipoUsuario.dto';
 export * from './usuarios/tipoUsuario/create-tipoUsuario.dto';
 export * from './usuarios/tipoUsuario/update-tipoUsuario.dto'
+
+//ROL
+export * from './usuarios/rol/rol.dto';
+export * from './usuarios/rol/create-rol.dto';
+export * from './usuarios/rol/update-rol.dto';

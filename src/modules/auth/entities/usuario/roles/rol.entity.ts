@@ -7,10 +7,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { CatalogueEntity, CurriculumEntity } from '@core/entities';
+import { UsuarioEntity } from '@auth/entities';
 
-@Entity('subjects', { schema: 'core' })
+@Entity('rol', { schema: 'auth' })
 export class RolEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -35,6 +38,9 @@ export class RolEntity {
     nullable: true,
   })
   deletedAt: Date;
+
+  @ManyToOne(()=> UsuarioEntity, (usuarios) =>usuarios.roles)
+  usuarios: UsuarioEntity;
 
   @Column('varchar', {
     name: 'nombre_rol',

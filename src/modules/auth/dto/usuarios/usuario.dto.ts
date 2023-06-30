@@ -18,9 +18,16 @@ import {
   minLengthValidationOptions,
 } from '@shared/validation';
 import { CatalogueEntity } from '@core/entities';
-import { RoleEntity } from '@auth/entities';
+import { RolEntity, RoleEntity } from '@auth/entities';
 
 export class UsuarioDto {
+  @IsNotEmpty(isNotEmptyValidationOptions())
+  readonly role: RolEntity;
+
+  @IsNotEmpty(isNotEmptyValidationOptions())
+  @IsString(isStringValidationOptions())
+  roles: string;
+  
   @IsNotEmpty(isNotEmptyValidationOptions())
   @IsNumber()
   cedula: number;

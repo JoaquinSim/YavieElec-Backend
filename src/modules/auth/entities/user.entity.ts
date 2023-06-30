@@ -43,7 +43,7 @@ export class UserEntity {
   })
   deletedAt: Date;
 
-  @ManyToMany(() => RoleEntity, (role) => role.users, { eager: true })
+  @ManyToMany(() => RoleEntity, (role) => role.users, { eager: false })
   roles: RoleEntity[];
 
   @OneToOne(() => StudentEntity, (student) => student.user)

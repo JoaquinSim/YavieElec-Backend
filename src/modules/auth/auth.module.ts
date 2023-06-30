@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { config } from '@config';
 import {
   AuthController,
+  RolController,
   RolesController,
   TipoUsuarioController,
   UsersController,
@@ -17,7 +18,7 @@ import {
   RolesService,
   TipoUsuarioService,
   UsersService,
-  UsuariosService,
+  UsuarioService,
 } from '@auth/services';
 import { JwtStrategy } from '@auth/strategies';
 import { authProviders } from '@auth/providers';
@@ -50,6 +51,7 @@ import { MenusController } from './controllers/menus.controller';
     //
     UsuarioController,
     TipoUsuarioController,
+    RolController
   ],
   providers: [
     ...authProviders,
@@ -58,7 +60,7 @@ import { MenusController } from './controllers/menus.controller';
     RolesService,
     UsersService,
     MenusService,
-    UsuariosService,
+    UsuarioService,
     TipoUsuarioService,
     RolService,
   ],
@@ -68,7 +70,7 @@ import { MenusController } from './controllers/menus.controller';
     MenusService,
 
     //
-    UsuariosService,
+    UsuarioService,
     TipoUsuarioService,
     RolService,
   ],

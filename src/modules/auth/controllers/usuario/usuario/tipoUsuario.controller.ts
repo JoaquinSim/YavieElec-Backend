@@ -17,6 +17,7 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UsuarioEntity } from '@auth/entities';
 import { TipoUsuarioService } from '@auth/services';
 import { ResponseHttpModel } from '@shared/models';
+import { CreateTipoUsuarioDto, UpdateTipoUsuarioDto } from '@auth/dto';
 
 @ApiTags('Tipo_Usuario')
 @Controller('tipoUsuario')
@@ -26,7 +27,7 @@ export class TipoUsuarioController {
   @ApiOperation({ summary: 'Crear usuario' })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() payload: any): Promise<ResponseHttpModel> {
+  async create(@Body() payload: CreateTipoUsuarioDto): Promise<ResponseHttpModel> {
     const serviceResponse = await this.tipoUsuarioService.create(payload);
 
     return {
@@ -68,7 +69,7 @@ export class TipoUsuarioController {
   @HttpCode(HttpStatus.CREATED)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() payload: any,
+    @Body() payload: UpdateTipoUsuarioDto,
   ): Promise<ResponseHttpModel> {
     const serviceResponse = await this.tipoUsuarioService.update(id, payload);
 

@@ -5,9 +5,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UsuarioEntity } from './usuario.entity';
 
 @Entity('tipo_usuario', { schema: 'auth' })
 export class TipoUsuarioEntity {
@@ -75,4 +77,9 @@ export class TipoUsuarioEntity {
     comment: 'Descripcion del tipo de usuario',
   })
   descripcionTipoUsuario: string;
+
+  
+  @OneToOne(() => UsuarioEntity)
+  @JoinColumn()
+  usuario: UsuarioEntity;
 }

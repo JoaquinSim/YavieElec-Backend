@@ -11,4 +11,6 @@ export class CreateUsuarioDto extends PickType(UsuarioDto, [
   'clave',
   'estado',
   'estadoVoto',
+  'role',
+  'roles'
 ]) {}

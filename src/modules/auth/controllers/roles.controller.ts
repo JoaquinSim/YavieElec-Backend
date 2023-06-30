@@ -19,8 +19,8 @@ import { RoleEntity } from '@auth/entities';
 import { ResponseHttpModel } from '@shared/models';
 import { RolesService } from '@auth/services';
 
-@ApiTags('Roles')
-@Controller('roles')
+@ApiTags('Rols')
+@Controller('rols')
 export class RolesController {
   constructor(private rolesService: RolesService) {}
 

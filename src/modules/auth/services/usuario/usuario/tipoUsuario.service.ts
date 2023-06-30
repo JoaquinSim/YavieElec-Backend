@@ -9,17 +9,20 @@ import {
 import { TipoUsuarioEntity } from '@auth/entities';
 import { ServiceResponseHttpModel } from '@shared/models';
 import { RepositoryEnum } from '@shared/enums';
+import { CreateTipoUsuarioDto, UpdateTipoUsuarioDto } from '@auth/dto';
+import { UsuarioService } from './usuario.service';
 
 @Injectable()
 export class TipoUsuarioService {
   constructor(
     @Inject(RepositoryEnum.TIPO_USUARIO_REPOSITORY)
     private tipousuarioRepository: Repository<TipoUsuarioEntity>,
+    //private usuarioSevice:UsuarioService
   ) {}
 
   async catalogue(): Promise<ServiceResponseHttpModel> {
     const response = await this.tipousuarioRepository.findAndCount({
-      //relations: ['institution', 'modality', 'state', 'type'],
+      relations: ['usuario'],
       take: 1000,
     });
 
@@ -32,10 +35,12 @@ export class TipoUsuarioService {
     };
   }
 
-  async create(payload: any): Promise<ServiceResponseHttpModel> {
+  async create(payload: CreateTipoUsuarioDto): Promise<ServiceResponseHttpModel> {
     const newTipousuario = this.tipousuarioRepository.create(payload);
 
-    return { data: newTipousuario };
+    const tiposusuarioCreated = await this.tipousuarioRepository.save(newTipousuario);
+
+    return { data: tiposusuarioCreated };
   }
 
   async findAll(): Promise<ServiceResponseHttpModel> {
@@ -61,7 +66,7 @@ export class TipoUsuarioService {
     return { data: usuario };
   }
 
-  async update(id: string, payload: any): Promise<ServiceResponseHttpModel> {
+  async update(id: string, payload: UpdateTipoUsuarioDto): Promise<ServiceResponseHttpModel> {
     const usuario = await this.tipousuarioRepository.findOneBy({
       id,
     });

@@ -6,13 +6,16 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as Bcrypt from 'bcrypt';
-import { Exclude } from 'class-transformer';
+import { RolEntity } from '../roles/rol.entity';
 
 @Entity('usuario', { schema: 'auth' })
 export class UsuarioEntity {
@@ -42,33 +45,13 @@ export class UsuarioEntity {
     comment: 'fecha de eliminación de usuario',
   })
   deletedAt: Date;
-  /*
-    @OneToOne(() => StudentEntity)
-    student: StudentEntity;
-  
-    @ManyToOne(() => CatalogueEntity, { nullable: true })
-    @JoinColumn({ name: 'is_executed_practice' })
-    isExecutedPractice: CatalogueEntity;
-  
-    @ManyToOne(() => CatalogueEntity, { nullable: true })
-    @JoinColumn({ name: 'is_executed_community' })
-    isExecutedCommunity: CatalogueEntity;
-  
-    @ManyToOne(() => CatalogueEntity, { nullable: true })
-    @JoinColumn({ name: 'is_disability' })
-    isDisability: CatalogueEntity;
-  
-    @ManyToOne(() => CatalogueEntity, { nullable: true })
-    @JoinColumn({ name: 'is_lost_Gratuity' })
-    isLostGratuity: CatalogueEntity;
-  
-    @ManyToOne(() => CatalogueEntity, { nullable: true })
-    @JoinColumn({ name: 'is_subject_repeat' })
-    isSubjectRepeat: CatalogueEntity;
-  */
-  /*
-    // COLUMNS
-    */
+ 
+  @Column({
+    name: 'roles',
+    type: 'varchar',
+    comment: 'roles del usuario',
+  })
+  roles: string;
 
   @Column({
     name: 'cedula',
@@ -118,14 +101,6 @@ export class UsuarioEntity {
     comment: 'Especifique su estado. Ej: Activo',
   })
   estado: boolean;
-
-  //   @Column({
-  //     name: 'tipoUsuario',
-  //     type: 'varchar',
-  //     comment:
-  //       'Especifique que tipo de usuario es. Ej: Administrador, Candidato, Votante',
-  //   })
-  //   tipousuario: string;
 
   @Column({
     name: 'clave',

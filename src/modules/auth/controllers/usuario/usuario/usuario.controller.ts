@@ -15,7 +15,7 @@ import {
 
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UsuarioEntity } from '@auth/entities';
-import { UsuariosService } from '@auth/services';
+import { UsuarioService } from '@auth/services';
 import { ResponseHttpModel } from '@shared/models';
 import { CreateUsuarioDto } from '../../../dto/usuarios/create-usuario.dto';
 import { UpdateUsuarioDto } from '@auth/dto';
@@ -23,7 +23,7 @@ import { UpdateUsuarioDto } from '@auth/dto';
 @ApiTags('Usuarios')
 @Controller('usuarios')
 export class UsuarioController {
-  constructor(private usuarioService: UsuariosService) {}
+  constructor(private usuarioService: UsuarioService) {}
 
   @ApiOperation({ summary: 'Crear usuario' })
   @Post()
