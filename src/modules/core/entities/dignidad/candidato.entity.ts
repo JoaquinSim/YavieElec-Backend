@@ -47,16 +47,25 @@ import { CargoEntity } from './cargo.entity';
     @JoinColumn({ name: 'lista_id' })
     lista: ListasEntity;
 
-    @OneToOne(() => CargoEntity)
-    @JoinColumn()
-    cargo: CargoEntity
+    // @OneToOne(() => CargoEntity, {
+    //   nullable: true,
+    // })
+    // @JoinColumn()
+    // cargo: CargoEntity
   
     @Column({
-      name: 'id_usuario',
-      type: 'numeric',
-      comment: 'Id que tiene el usuario',
+      name: 'nombre',
+      type: 'varchar',
+      comment: 'Nombre del candidato',
     })
-    id_usuario: number;
+    nombre: string;
+
+    @Column({
+      name: 'cargo',
+      type: 'varchar',
+      comment: 'Cargo del candidato',
+    })
+    cargo: string;
     
   }
   

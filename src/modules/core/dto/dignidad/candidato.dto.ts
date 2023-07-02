@@ -19,10 +19,12 @@ export class CandidatoDto {
   @IsNotEmpty(isNotEmptyValidationOptions())
   readonly lista: ListasEntity;
 
-  @IsNotEmpty(isNotEmptyValidationOptions())
-  readonly cargo: CargoEntity;
 
   @IsNotEmpty(isNotEmptyValidationOptions())
-  @IsNumber()
-  id_usuario: number;
+  @IsString()
+  nombre: string;
+
+  @IsNotEmpty(isNotEmptyValidationOptions())
+  @IsString()
+  cargo: string;
 }

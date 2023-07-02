@@ -50,9 +50,9 @@ export class CandidatosService {
       payload.lista.id
     )).data;
 
-    newcandidato.cargo = (await this.cargoService.findOne(
-      payload.cargo.idCargo
-    )).data;
+    // newcandidato.cargo = (await this.cargoService.findOne(
+    //   payload.cargo.idCargo
+    // )).data;
 
     console.log("Creando candidato unida al cronograma: " + newcandidato);
 
