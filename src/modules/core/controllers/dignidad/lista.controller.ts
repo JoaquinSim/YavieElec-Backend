@@ -88,6 +88,8 @@ export class ListasController {
     @Body() payload: UpdateListaDto,
   ): Promise<ResponseHttpModel> {
     const serviceResponse = await this.listasService.update(id, payload);
+    console.log('Esto actualiza');
+    
     return {
       data: serviceResponse.data,
       message: `El lista fue Actualizado`,

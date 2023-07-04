@@ -72,9 +72,9 @@ export class AuthService {
     }
 
    // user.activatedAt = new Date();
-    const { clave, ...userRest } = user;
+    //const { clave } = user;
 
-    await this.repository.update(userRest.id, userRest);
+    //await this.repository.update(userRest.id, userRest);
 
     const accessToken = this.generateJwt(user);
 

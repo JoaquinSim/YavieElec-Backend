@@ -47,6 +47,9 @@ export class ListaDto {
   @IsNotEmpty()
   estado: boolean;
 
-  @IsNotEmpty(isNotEmptyValidationOptions())
-  readonly tipoLista: TipoListaEntity;
+  @IsNumber()
+  votos: number;
+
+ // @IsNotEmpty(isNotEmptyValidationOptions())
+ // readonly tipoLista: TipoListaEntity;
 }

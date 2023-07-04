@@ -119,4 +119,11 @@ export class ListasEntity {
     comment: 'Estado de la lista',
   })
   estado: boolean;
+
+  @Column('numeric', {
+    name: 'votos',
+    nullable: true,
+    comment: 'Votos validos de la lista',
+  })
+  votos: number;
 }
